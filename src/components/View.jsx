@@ -40,19 +40,21 @@ export default function View({ element, updateTodo, deleteTodo }) {
   };
 
   return (
-    <li className={style}>
-      <div className="view">
-        <input className="toggle" onClick={() => handleClick(element)} type="checkbox" />
-        <label>
-          <span className="description">{element.task}</span>
-          <span className="created">Создано {time}</span>
-        </label>
-        <Button onClick={editClick} className="icon icon-edit"></Button>
-        <Button onClick={() => destroyClick(element)} className="icon icon-destroy"></Button>
+    <li>
+      <div className={style}>
+        <div className="view">
+          <input className="toggle" onClick={() => handleClick(element)} type="checkbox" />
+          <label>
+            <span className="description">{element.task}</span>
+            <span className="created">Создано {time}</span>
+          </label>
+          <Button onClick={editClick} className="icon icon-edit"></Button>
+          <Button onClick={() => destroyClick(element)} className="icon icon-destroy"></Button>
+        </div>
+        <form onSubmit={handleKeyPress}>
+          <input type="text" className="edit" value={value} onChange={(event) => setValue(event.target.value)} />
+        </form>
       </div>
-      <form onSubmit={handleKeyPress}>
-        <input type="text" className="edit" value={value} onChange={(event) => setValue(event.target.value)} />
-      </form>
     </li>
   );
 }

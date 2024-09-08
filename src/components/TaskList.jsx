@@ -5,7 +5,12 @@ export default function TaskList({ todos, updateTodo, deleteTodo }) {
     const content = todos.map((element) => (
       <View key={element.id} element={element} updateTodo={updateTodo} deleteTodo={deleteTodo} />
     ));
-    return <>{content}</>;
+    return (
+      <>
+        <div className="TaskList"></div>
+        {content}
+      </>
+    );
   }
 }
 TaskList.propTypes = {
