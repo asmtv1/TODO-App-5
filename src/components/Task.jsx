@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
 import Button from './Button';
+import Timer from './Timer';
 import { ru } from 'date-fns/locale';
 import { useState } from 'react';
 
@@ -26,7 +27,6 @@ export default function View({ element, updateTodo, deleteTodo }) {
   const editClick = () => {
     setStyle('editing');
   };
-
   const handleKeyPress = (event) => {
     event.preventDefault();
     if (value.trim().length === 0) {
@@ -46,6 +46,9 @@ export default function View({ element, updateTodo, deleteTodo }) {
           <input className="toggle" onClick={() => handleClick(element)} type="checkbox" />
           <label>
             <span className="description">{element.task}</span>
+
+            <Timer element={element} />
+
             <span className="created">Создано {time}</span>
           </label>
           <Button onClick={editClick} className="icon icon-edit"></Button>

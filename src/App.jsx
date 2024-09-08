@@ -5,8 +5,8 @@ import { useState } from 'react';
 
 function App() {
   const [todos, setTodos] = useState([]);
-  const addTodo = (todo) => {
-    setTodos([...todos, { task: todo, active: true, date: new Date(), id: Date.now() }]);
+  const addTodo = (todo, timer) => {
+    setTodos([...todos, { task: todo, active: true, date: new Date(), id: Date.now(), timer }]);
   };
   const updateTodo = (updatedElement) => {
     setTodos((prevTodos) => prevTodos.map((todo) => (todo.id === updatedElement.id ? updatedElement : todo)));

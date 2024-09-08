@@ -1,4 +1,4 @@
-import View from './View';
+import View from './Task';
 import PropTypes from 'prop-types';
 export default function TaskList({ todos, updateTodo, deleteTodo }) {
   if (todos.length > 0) {

@@ -2,34 +2,31 @@ import { useState } from 'react';
 import Button from './Button';
 
 export default function TasksFilter() {
-  const [selectedFilter, setSelectedFilter] = useState('All');
   const handleClick = (type) => {
-    setSelectedFilter(type);
-    document.querySelectorAll('li.hidden').forEach((item) => item.classList.remove('hidden'));
+    document.querySelectorAll('div.hidden').forEach((item) => item.classList.remove('hidden'));
     if (type === 'Completed') {
-      document.querySelectorAll('li.active').forEach((item) => item.classList.add('hidden'));
+      document.querySelectorAll('div.active').forEach((item) => item.classList.add('hidden'));
     } else if (type === 'Active') {
-      document.querySelectorAll('li.completed').forEach((item) => item.classList.add('hidden'));
+      document.querySelectorAll('div.completed').forEach((item) => item.classList.add('hidden'));
     }
   };
 
   return (
-    <ul className="filters">
-      <li>
-        <Button onClick={() => handleClick('All')} className={selectedFilter === 'All' ? 'selected' : ''}>
-          All
-        </Button>
-      </li>
-      <li>
-        <Button onClick={() => handleClick('Active')} className={selectedFilter === 'Active' ? 'selected' : ''}>
-          Active
-        </Button>
-      </li>
-      <li>
-        <Button onClick={() => handleClick('Completed')} className={selectedFilter === 'Completed' ? 'selected' : ''}>
-          Completed
-        </Button>
-      </li>
-    </ul>
+    <div className="filters">
+      <input type="radio" name="filter" onClick={() => handleClick('All')} id="all" className={'All'} />
+      <label htmlFor="all">All</label>
+
+      <input type="radio" name="filter" onClick={() => handleClick('Active')} id="active" className={'Active'} />
+      <label htmlFor="active">Active</label>
+
+      <input
+        type="radio"
+        name="filter"
+        onClick={() => handleClick('Completed')}
+        id="completed"
+        className={'Completed'}
+      />
+      <label htmlFor="completed">Completed</label>
+    </div>
   );
 }

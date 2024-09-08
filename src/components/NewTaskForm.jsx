@@ -17,21 +17,24 @@ export default function NewTaskForm({ addTodo }) {
       message.error('Минуты и секунды не могут быть пустыми');
       throw new Error();
     }
-    addTodo(value);
+    const timer = [minutes, seconds]; // [минуты, секунды]
+    addTodo(value, timer);
     setValue('');
     setMinutes('');
     setSeconds('');
   };
 
   const handleSecondsChange = (event) => {
-    const value = event.target.value;
+    let value = event.target.value;
+    value = +value;
     if (Number(value) >= 0 && Number(value) <= 60) {
       setSeconds(value);
     }
   };
 
   const handleMinutesChange = (event) => {
-    const value = event.target.value;
+    let value = event.target.value;
+    value = +value;
     if (Number(value) >= 0 && Number(value) <= 999) {
       setMinutes(value);
     }
