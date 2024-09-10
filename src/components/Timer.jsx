@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 export default function Timer({ element }) {
   const [minutes, setMinutes] = useState(element.timer[0]);
   const [seconds, setSeconds] = useState(element.timer[1]);
   const [pause, setPause] = useState(true);
+  const [lastUpdate, setLastUpdate] = useState(Date.now());
 
   const second = (value) => {
     if (value > 0) {
       setSeconds(value - 1);
     } else {
       if (value === 0 && minutes > 0) {
-        // Используем === для сравнения
         setSeconds(59);
         setMinutes(minutes - 1);
       } else {
@@ -20,26 +21,27 @@ export default function Timer({ element }) {
       }
     }
   };
-  const pauseTimer = () => {
-    setPause(true);
-  };
 
   useEffect(() => {
+    let intervalId;
     if (pause) {
-      const intervalId = setInterval(() => {
-        second(seconds); // обновляем секунды
-      }, 1000);
-
-      return () => clearInterval(intervalId);
-    } // очищаем интервал при размонтировании компонента
-  }, [seconds, minutes, pause]); // добавляем зависимости
+      intervalId = setInterval(() => {
+        const now = Date.now();
+        if (now - lastUpdate >= 1000) {
+          second(seconds);
+          setLastUpdate(now);
+        }
+      }, 100);
+    }
+    return () => clearInterval(intervalId);
+  }, [pause, lastUpdate]);
 
   return (
     <span className="description">
       <input
         type="radio"
         name="timer"
-        onClick={() => pauseTimer()}
+        onClick={() => setPause(true)}
         className={`icon icon-play ${pause ? 'selected' : ''}`}
       />
       <input
@@ -54,3 +56,10 @@ export default function Timer({ element }) {
     </span>
   );
 }
+View.propTypes = {
+  element: PropTypes.shape({
+    task: PropTypes.string.isRequired,
+    date: PropTypes.instanceOf(Date).isRequired,
+    active: PropTypes.bool.isRequired,
+  }),
+};

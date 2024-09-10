@@ -6,10 +6,10 @@ export default function TaskList({ todos, updateTodo, deleteTodo }) {
       <View key={element.id} element={element} updateTodo={updateTodo} deleteTodo={deleteTodo} />
     ));
     return (
-      <>
+      <ul className="todo-list">
         <div className="TaskList"></div>
         {content}
-      </>
+      </ul>
     );
   }
 }

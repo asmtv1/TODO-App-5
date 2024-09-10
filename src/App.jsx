@@ -18,9 +18,7 @@ function App() {
     <section className="todoapp">
       <h1>todos</h1>
       <NewTaskForm addTodo={addTodo} />
-      <ul className="todo-list">
-        <TaskList todos={todos} updateTodo={updateTodo} deleteTodo={deleteTodo} />
-      </ul>
+      <TaskList todos={todos} updateTodo={updateTodo} deleteTodo={deleteTodo} />
       <Footer todos={todos} deleteTodo={deleteTodo} />
     </section>
   );
