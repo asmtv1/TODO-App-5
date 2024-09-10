@@ -56,7 +56,7 @@ export default function Timer({ element }) {
     </span>
   );
 }
-View.propTypes = {
+Timer.propTypes = {
   element: PropTypes.shape({
     task: PropTypes.string.isRequired,
     date: PropTypes.instanceOf(Date).isRequired,
