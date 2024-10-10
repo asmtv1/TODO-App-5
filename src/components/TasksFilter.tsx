@@ -1,8 +1,5 @@
-import { useState } from 'react';
-import Button from './Button';
-
-export default function TasksFilter() {
-  const handleClick = (type) => {
+const TasksFilter: React.FC = () => {
+  const handleClick = (type: string) => {
     document.querySelectorAll('div.hidden').forEach((item) => item.classList.remove('hidden'));
     if (type === 'Completed') {
       document.querySelectorAll('div.active').forEach((item) => item.classList.add('hidden'));
@@ -30,3 +27,4 @@ export default function TasksFilter() {
     </div>
   );
 }
+export default TasksFilter;

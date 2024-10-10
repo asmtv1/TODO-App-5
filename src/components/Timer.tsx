@@ -1,13 +1,29 @@
 import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { Todo } from './Task';
 
-export default function Timer({ element }) {
-  const [minutes, setMinutes] = useState(element.timer[0]);
-  const [seconds, setSeconds] = useState(element.timer[1]);
+interface TimerProps {
+  element: Todo;
+}
+const Timer: React.FC<TimerProps> = ({ element }) => {
+  const [minutes, setMinutes] = useState(element.timer ? element.timer[0] : 0);
+  const [seconds, setSeconds] = useState(element.timer ? element.timer[1] : 0);
   const [pause, setPause] = useState(true);
   const [lastUpdate, setLastUpdate] = useState(Date.now());
+  let intervalId: number | undefined;
+  useEffect(() => {
+    if (pause) {
+      intervalId = setInterval(() => {
+        const now = Date.now();
+        if (now - lastUpdate >= 1000) {
+          second(seconds);
+          setLastUpdate(now);
+        }
+      }, 100);
+    }
+    return () => clearInterval(intervalId);
+  }, [pause, lastUpdate]);
 
-  const second = (value) => {
+  const second = (value: number) => {
     if (value > 0) {
       setSeconds(value - 1);
     } else {
@@ -21,20 +37,6 @@ export default function Timer({ element }) {
       }
     }
   };
-
-  useEffect(() => {
-    let intervalId;
-    if (pause) {
-      intervalId = setInterval(() => {
-        const now = Date.now();
-        if (now - lastUpdate >= 1000) {
-          second(seconds);
-          setLastUpdate(now);
-        }
-      }, 100);
-    }
-    return () => clearInterval(intervalId);
-  }, [pause, lastUpdate]);
 
   return (
     <span className="description">
@@ -55,11 +57,6 @@ export default function Timer({ element }) {
       </div>
     </span>
   );
-}
-Timer.propTypes = {
-  element: PropTypes.shape({
-    task: PropTypes.string.isRequired,
-    date: PropTypes.instanceOf(Date).isRequired,
-    active: PropTypes.bool.isRequired,
-  }),
 };
+
+export default Timer;

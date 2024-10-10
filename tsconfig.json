@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "esnext",
+    "jsx": "react-jsx", // или "react" для старых версий
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node", // Вот эта настройка вызывает кучу вопросов, но без неё много красным подчёркивает
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/components/"], // путь к твоим файлам
+  "exclude": ["node_modules"]
+}

@@ -1,13 +1,18 @@
-import PropTypes from 'prop-types';
 import TasksFilter from './TasksFilter';
 import { useState, useEffect, useCallback } from 'react';
 import Button from './Button';
+import { Todo } from './Task'; //интерфейс Todo
 
-export default function Footer({ todos, deleteTodo }) {
-  const [item, setItem] = useState(0);
+interface FooterProps {
+  todos: Todo[]; // Массив задач
+  deleteTodo: (todo: Todo) => void; // Функция  удаления
+}
+
+const Footer: React.FC<FooterProps> = ({ todos, deleteTodo }) => {
+  const [item, setItem] = useState<number>(0);
 
   const calculateActiveItems = useCallback(() => {
-    let sum = todos.reduce((accumulator, todoItem) => {
+    let sum = todos.reduce((accumulator: number, todoItem: Todo) => {
       return todoItem.active ? accumulator + 1 : accumulator;
     }, 0);
     setItem(sum);
@@ -18,7 +23,7 @@ export default function Footer({ todos, deleteTodo }) {
   }, [calculateActiveItems]);
 
   function handleClick() {
-    const Clear = todos.filter((item) => item.active !== true);
+    const Clear = todos.filter((item: Todo) => item.active !== true);
     if (Clear.length !== 0) for (let i = 0; i < Clear.length; i++) deleteTodo(Clear[i]);
   }
 
@@ -31,13 +36,6 @@ export default function Footer({ todos, deleteTodo }) {
       </Button>
     </footer>
   );
-}
-
-Footer.propTypes = {
-  todos: PropTypes.arrayOf(
-    PropTypes.shape({
-      active: PropTypes.bool.isRequired,
-    })
-  ).isRequired,
-  deleteTodo: PropTypes.func.isRequired,
 };
+
+export default Footer;

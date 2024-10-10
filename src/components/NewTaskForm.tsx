@@ -2,40 +2,42 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import 'antd/dist/reset.css';
 import { message } from 'antd';
-export default function NewTaskForm({ addTodo }) {
-  const [value, setValue] = useState('');
-  const [seconds, setSeconds] = useState('');
-  const [minutes, setMinutes] = useState('');
-  const handleSubmit = (event) => {
+
+interface NewTaskFormProps {
+  addTodo: (todo: string, timer?: [number, number]) => void;
+}
+const NewTaskForm: React.FC<NewTaskFormProps> = ({ addTodo }) => {
+  const [value, setValue] = useState<string>('');
+  const [seconds, setSeconds] = useState<number | null>(null);
+  const [minutes, setMinutes] = useState<number | null>(null);
+  const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
     if (value.trim().length === 0) {
       message.error('Поле задания не может быть пустым');
       throw new Error();
     }
-    if (minutes === '' || seconds === '') {
+    if (minutes === null || seconds === null) {
       message.error('Минуты и секунды не могут быть пустыми');
       throw new Error();
     }
-    const timer = [minutes, seconds]; // [минуты, секунды]
+    const timer: [number, number] = [minutes, seconds]; // [минуты, секунды]
     addTodo(value, timer);
     setValue('');
-    setMinutes('');
-    setSeconds('');
+    setMinutes(null);
+    setSeconds(null);
   };
 
-  const handleSecondsChange = (event) => {
-    let value = event.target.value;
-    value = +value;
-    if (Number(value) >= 0 && Number(value) <= 60) {
+  const handleSecondsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(event.target.value);
+    if (value >= 0 && value <= 60) {
       setSeconds(value);
     }
   };
 
-  const handleMinutesChange = (event) => {
-    let value = event.target.value;
-    value = +value;
-    if (Number(value) >= 0 && Number(value) <= 999) {
+  const handleMinutesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(event.target.value);
+    if (value >= 0 && value <= 999) {
       setMinutes(value);
     }
   };
@@ -46,7 +48,7 @@ export default function NewTaskForm({ addTodo }) {
         type="text"
         className="new-todo"
         placeholder="Что ты задумал?"
-        value={value} // без этого ошибку орёт?!
+        value={value ?? ''} // так вроде правильней
         onChange={(event) => setValue(event.target.value)}
       />
       <input
@@ -57,7 +59,7 @@ export default function NewTaskForm({ addTodo }) {
         max="999"
         step="1"
         onChange={handleMinutesChange}
-        value={minutes}
+        value={minutes ?? ''} // Обработка null
       />
       <span>:</span>
       <input
@@ -68,13 +70,11 @@ export default function NewTaskForm({ addTodo }) {
         max="60"
         step="1"
         onChange={handleSecondsChange}
-        value={seconds}
+        value={seconds ?? ''} // Обработка null
       />
       <input type="submit" hidden />
     </form>
   );
-}
-
-NewTaskForm.propTypes = {
-  addTodo: PropTypes.func.isRequired,
 };
+
+export default NewTaskForm;
